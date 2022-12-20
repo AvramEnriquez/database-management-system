@@ -12,19 +12,13 @@ while valid_database == False:
     DB_HOST = input("Insert database hostname/server address: ")
     DB_PORT = input("Insert database port: ")
 
-    DB_NAME1 = 'postgres'
-    DB_USER1 = 'postgres'
-    DB_PASS1 = ''
-    DB_HOST1 = 'localhost'
-    DB_PORT1 = '5432'
-
     try:
         postdb = psycopg2.connect(
-            database=DB_NAME1,
-            user=DB_USER1,
-            password=DB_PASS1,
-            host=DB_HOST1,
-            port=DB_PORT1)
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            host=DB_HOST,
+            port=DB_PORT)
         print("Database connected successfully!")
         valid_database = True
     except:
