@@ -28,19 +28,21 @@ def create_table():
     table_name = input("Create Table name: ")
 
     try:
-        cur = postdb.cursor()  # Create a cursor
+        # Create a cursor
+        cur = postdb.cursor()
     
         # Execute query to create table
         cur.execute(f"""
             CREATE TABLE {table_name} 
             (id SERIAL PRIMARY KEY NOT NULL)
-        ;""")
+            ;""")
         print(f"{table_name} Table created successfully with serial ID column.")
+
     except psycopg2.errors.DuplicateTable:
         # State if table already exists
         print(f"{table_name} Table already exists.")
 
-    postdb.commit()  # Commit the change regardless
+    postdb.commit()  # Commit the change
 
 def add_column():
     table = input("Which table? ")
@@ -48,46 +50,53 @@ def add_column():
     datatype = input("Add column data type: ")
 
     try:
-        cur = postdb.cursor()  # Create a cursor
-    
+        # Create a cursor
+        cur = postdb.cursor()
+
         # Execute query to alter table
         cur.execute(f"""
             ALTER TABLE {table} 
             ADD {column_name} {datatype}
-        ;""")
+            ;""")
         print(f"Column '{column_name}' datatype '{datatype}' added successfully!")
+
     except psycopg2.errors.DuplicateColumn:
         # State if column already exists
         print(f"Column '{column_name}' already exists.")
+
     except:
         # State if other errors occur, syntax, etc.
         print(f"Invalid data type, please try again.")
 
-    postdb.commit()  # Commit the change regardless
+    postdb.commit()  # Commit the change
 
 def add_user():
     table = input("Table name: ")
 
-    cur = postdb.cursor()  # Creating cursor
+    # Create a cursor
+    cur = postdb.cursor()
 
     cur.execute(f"""
         SELECT *
         FROM {table}
-    ;""")
+        ;""")
 
-    col = []
-    column_names = [desc[0] for desc in cur.description]
-    s = '(' + ', '.join(column_names[1:]) + ')'
-    print(s)
+    values = []
+    # Pull column names into list
+    col_name_list = [desc[0] for desc in cur.description]
 
-    for column in column_names[1:]:
-        col.append(input(f"Input {column}: "))
-    
-    col1 = tuple(col)
+    # Remove quotation marks from list and wrap in ()
+    # Ignore ID column name since ID auto-increments
+    column_names = '(' + ', '.join(col_name_list[1:]) + ')'
+    print(column_names)
+
+    for variable in col_name_list[1:]:
+        values.append(input(f"Input {variable}: "))
+
     cur.execute(f"""
-        INSERT INTO {table} {s}
-        VALUES {col1}
-    ;""")
+        INSERT INTO {table} {column_names}
+        VALUES {tuple(values)}
+        ;""")
 
     postdb.commit()  # Commit the changes
 
@@ -98,5 +107,9 @@ function_dict = {'create_table':create_table, 'add_column':add_column, 'add_user
 command = ''
 
 while command != 'done':
-    command = input("What would you like to do? Type done if you are finished: ")
+    command = input("What would you like to do?\n"
+        "'create_table' creates a new table,\n"
+        "'add_column' adds a new column to an existing table,\n"
+        "'add_user' adds a new entity to an existing table,\n"
+        "Type 'done' when you are finished: ")
     function_dict[command]()
