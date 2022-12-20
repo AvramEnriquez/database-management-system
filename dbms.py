@@ -107,6 +107,7 @@ function_dict = {'create_table':create_table, 'add_column':add_column, 'add_user
 command = ''
 
 while command != 'done':
+    print("")
     command = input("What would you like to do?\n"
         "'create_table' creates a new table,\n"
         "'add_column' adds a new column to an existing table,\n"
