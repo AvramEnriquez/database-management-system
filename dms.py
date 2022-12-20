@@ -1,5 +1,7 @@
 import psycopg2
  
+# Insert database name, username, password, server address, and port here.
+# Leave blank if empty
 DB_NAME = ""
 DB_USER = ""
 DB_PASS = ""
