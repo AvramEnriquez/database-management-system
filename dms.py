@@ -1,10 +1,10 @@
 import psycopg2
  
-DB_NAME = "postgres"
-DB_USER = "postgres"
+DB_NAME = ""
+DB_USER = ""
 DB_PASS = ""
-DB_HOST = "localhost"
-DB_PORT = "5432"
+DB_HOST = ""
+DB_PORT = ""
 
 try:
     conn = psycopg2.connect(database=DB_NAME,
@@ -21,7 +21,7 @@ try:
  
     # Execute query to create table
     cur.execute("""
-    CREATE TABLE employee
+    CREATE TABLE profile
     (
         id SERIAL PRIMARY KEY NOT NULL,
         name TEXT NOT NULL,
@@ -41,10 +41,9 @@ email = input('Input Email:')
 cur = conn.cursor()  # Creating cursor
 
 cur.execute(f"""
-INSERT INTO employee (name, email)
+INSERT INTO profile (name, email)
 VALUES ('{name}', '{email}');
 """)
 
-# Commit the changes
-conn.commit()
-print("Employee inputted successfully")
+conn.commit()  # Commit the changes
+print("Profile inputted successfully")
