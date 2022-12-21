@@ -1,6 +1,7 @@
 """Create and manage a database"""
 import psycopg2
 
+
 valid_database = False
 
 while valid_database == False:
@@ -43,6 +44,7 @@ def create_table():
         print(f"{table_name} Table already exists.")
 
     postdb.commit()  # Commit the change
+    cur.close()  # Close cursor
 
 def add_column():
     table = input("Which table? ")
@@ -66,9 +68,10 @@ def add_column():
 
     except:
         # State if other errors occur, syntax, etc.
-        print(f"Invalid data type, please try again.")
+        print(f"Something went wrong, please try again.")
 
     postdb.commit()  # Commit the change
+    cur.close()  # Close cursor
 
 def add_user():
     table = input("Table name: ")
@@ -99,8 +102,10 @@ def add_user():
         ;""")
 
     postdb.commit()  # Commit the changes
+    cur.close()  # Close cursor
 
 def done():
+    postdb.close()
     print("Done!")
 
 function_dict = {'create_table':create_table, 'add_column':add_column, 'add_user':add_user, 'done':done}
