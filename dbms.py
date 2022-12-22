@@ -34,9 +34,9 @@ def create_table():
     
         # Execute query to create table
         cur.execute(f"""
-            CREATE TABLE {table_name} 
-            (id SERIAL PRIMARY KEY NOT NULL)
-            ;""")
+            CREATE TABLE {table_name} (
+                id SERIAL PRIMARY KEY NOT NULL
+            );""")
         print(f"{table_name} Table created successfully with serial ID column.")
 
     except psycopg2.errors.DuplicateTable:
